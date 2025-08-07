@@ -9,7 +9,7 @@ const Header = () => {
           <div className="header-contents">
               <h1>Welcome to Food Delivery</h1>
               <p>Your favorite meals delivered to your door</p>  
-        <button>View Menu</button>  
+        <button>View Menu is this</button>  
       </div>  
     </div>
   )
