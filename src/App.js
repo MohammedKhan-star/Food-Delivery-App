@@ -5,6 +5,7 @@ import Home from './pages/Home/Home'
 import Footer from './components/Footer/Footer'
 import PlaceOrder from './pages/PlaceOrder/PlaceOrder'
 import LoginPopup from './components/LoginPopup/LoginPopup'
+import Cart from './pages/Cart/Cart'
 
 const App = () => {
   const [showLogin,setShowLogin]=useState(false)
@@ -13,9 +14,11 @@ const App = () => {
     {showLogin ? <LoginPopup setShowLogin={setShowLogin} />:<></>}
     <div className="app">
       <Navbar setShowLogin={setShowLogin} />
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/order" element={<PlaceOrder/>}/>
+        <Route path='/cart' element={<Cart/>}/>
        
       </Routes>
       </div>
