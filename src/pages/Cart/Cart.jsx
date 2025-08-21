@@ -12,7 +12,7 @@ const Cart = () => {
     getTotalCartAmount,
     url
   } = useContext(StoreContext)
-
+console.log("Cart Items:", cartItems);
   return (
     <div className='cart'>
       <div className="cart-item">

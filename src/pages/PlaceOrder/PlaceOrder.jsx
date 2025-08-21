@@ -27,36 +27,53 @@ const PlaceOrder = () => {
   }
  
   const placeOrder=async(event)=>{
+    console.log(placeOrder)
    event.preventDefault();
    let orderItems=[];
-
+    console.log("order Items:", orderItems);
    food_list.map((item)=>{
 
     if (cartItems[item._id]>0){
       let itemInfo=item;
+      console.log("Item Info:", itemInfo);
       itemInfo["quantity"]=cartItems[item._id];
       orderItems.push(itemInfo);
 
     }
    })
-   let orderData={
-    address:data,
-    items:orderItems,
-    amount:getTotalCartAmount()+2,
 
-   }
+  let orderData = {
+  address: data,
+  items: orderItems.map(item => ({
+    foodId: item._id,   // 👈 pass foodId
+    name: item.name,
+    price: item.price,
+    quantity: item.quantity
+  })),
+  amount: getTotalCartAmount() + 2,
+};
+
    console.log(orderData)
-   let response =await axios.post(`${url}/api/order/place`,orderData,{headers:{token}})
-   console.log(response)
-   if (response.data.success){
-     const {session_url}=response.data;
-     window.location.replace(session_url);
-   }
-   else{
-    alert("Error");
-   }
-  }
+   try {
+    let response = await axios.post(
+      `${url}/api/order/place`,
+      orderData,
+      { headers: { token } }
+    );
 
+    console.log(response);
+
+    if (response.data.success) {
+     // const { session_url } = response.data;
+      window.location.replace(response.data.session_url);
+    } else {
+      alert("Error placing order");
+    }
+  } catch (error) {
+    console.error("Order API failed", error);
+    alert("Something went wrong!");
+  }
+};
 
 
   return (
