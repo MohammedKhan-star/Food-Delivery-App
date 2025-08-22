@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext,useEffect } from 'react';
 import './Verify.css';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 
 const Verify = () => {
-  const [searchParams] = useSearchParams(); // You don't need setSearchParams if not updating
+  const [searchParams,setSearchParams] = useSearchParams(); // You don't need setSearchParams if not updating
   const success = searchParams.get("success");
   const orderId = searchParams.get("orderId");
   const {url} =useContext(StoreContext);
@@ -22,7 +22,9 @@ const Verify = () => {
         navigate("/")
     }
 }
-
+useEffect(() => {
+  verifyPayment();
+},[])
 
 
   return (

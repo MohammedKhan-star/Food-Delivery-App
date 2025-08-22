@@ -9,53 +9,47 @@ const MyOrders = () => {
   const [data, setData] = useState([]);
 
   // ✅ useCallback ensures function identity doesn’t change
-  const fetchOrders = useCallback(async () => {
-    try {
-      const response = await axios.post(
-        url + '/api/order/userorders',
-        {},
-        { headers: { token } }
-      );
-      if (response.data.orders) {
-        setData(response.data.orders);
-        console.log(response.data.orders);
-      } else {
-        setData([]);
-      }
-    } catch (err) {
-      console.error("Failed to fetch orders:", err);
-      setData([]);
-    }
-  }, [url, token]); // depends on url + token
+  // ✅ ESLint clean now
+  const fetchOrders=async()=>{
+    const response = await axios.post(url+'/api/order/userorders',{},{ headers: { token } });
+    setData(response.data.data);
+    console.log("Fetched orders:", response.data.data); 
+
+  }
 
   useEffect(() => {
-    if (token) {
+    if(token){
       fetchOrders();
     }
-  }, [fetchOrders]); // ✅ ESLint clean now
+  },[token])
 
   return (
     <div className="my-orders">
       <h2>My Orders</h2>
       <div className="container">
-        {data.map((order, index) => (
-          <div key={index} className="my-orders-order">
-            <img src={assets.parcel_icon} alt="Parcel" />
-            <p>
-              {order.items.map((item, i) =>
-                i === order.items.length - 1
-                  ? `${item.name} X ${item.quantity}`
-                  : `${item.name} X ${item.quantity}, `
-              )}
-            </p>
-            <p>${order.amount}.00</p>
-            <p>Items: {order.items.length}</p>
-            <p>
-              <span>&#x25cf;</span> <b>{order.status}</b>
-            </p>
-            <button className="btn">Track Order</button>
+       {data.map((order,index)=>{
+        return(
+          <div className="my-orders-order">
+            <img src={assets.parcel_icon} alt="" />
+            <p>{order.items.map((item,index)=>{
+              if(index=== order.items.length-1){
+                return item.name+" X"+item.quantity;
+              }
+              else{
+                return item.name+" X "+item.quantity+", ";
+              }
+
+            }) }</p>
+            
+            <p className="order-amount">Total: $ {order.amount}.00</p>
+            <p>Item: {order.items.length}</p>
+            <p><span>&#x25cf;</span><b>{order.status}</b></p>
+            <button>Track Order</button>
+          
+
           </div>
-        ))}
+        )
+       })}
       </div>
     </div>
   );
